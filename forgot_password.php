@@ -1,5 +1,11 @@
 <?php
-session_start();
+#session_start();
+date_default_timezone_set('Asia/Krasnoyarsk');
+
+require_once __DIR__ . '/lib/PHPMailer/src/Exception.php';
+require_once __DIR__ . '/lib/PHPMailer/src/PHPMailer.php';
+require_once __DIR__ . '/lib/PHPMailer/src/SMTP.php';
+
 require_once 'includes/db.php';
 require_once 'includes/auth.php';
 
@@ -34,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
