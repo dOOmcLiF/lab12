@@ -44,7 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 
     <div class="link">
-        Нет аккаунта? <a href="register.php">Зарегистрироваться</a>
+        Нет аккаунта? <a href="register.php">Зарегистрироваться</a><br>
+        <a href="forgot_password.php">Забыли пароль?</a>
     </div>
 </div>
 
