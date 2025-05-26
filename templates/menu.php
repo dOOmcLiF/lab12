@@ -6,6 +6,7 @@
         <?php if (!empty($_SESSION['user_id'])): ?>
             <li><a href="?page=upload">Загрузить фото</a></li>
             <li><a href="?page=edit_menu">Редактировать меню</a></li>
+            <li style="color: white; padding: 10px 16px;"> <?= htmlspecialchars($_SESSION['username']) ?></li>
             <li><a href="logout.php">Выход</a></li>
         <?php else: ?>
             <li><a href="/?page=login">Войти</a></li>
