@@ -1,5 +1,24 @@
+:root {
+    --primary-color: #2c3e50; /* Основной цвет */
+    --secondary-color: #1abc9c; /* Вторичный цвет */
+    --hover-color: #1a252f; /* Цвет при наведении */
+    --text-color: #333; /* Цвет текста */
+    --error-color: red; /* Цвет ошибок */
+    --success-color: green; /* Цвет успеха */
+    --background-color: white; /* Цвет фона */
+    --border-color: #ccc; /* Цвет рамки */
+}
+header {
+    text-align: center;
+}
+footer {
+    text-align: center;
+    padding: 10px 0;
+    font-size: 14px;
+}
+
 .main-menu {
-    background-color: #2c3e50;
+    background-color: var(--primary-color);
     padding: 10px 0;
     font-family: Arial, sans-serif;
 }
@@ -29,7 +48,7 @@
 
 .main-menu a:hover,
 .main-menu a:focus {
-    background-color: #1abc9c;
+    background-color: var(--secondary-color);
     color: #fff;
     outline: none;
 }
@@ -38,7 +57,7 @@
     max-width: 400px;
     width: 90%;
     margin: 80px auto;
-    background: white;
+    background: var(--background-color);
     padding: 30px 40px;
     border-radius: 10px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
@@ -46,7 +65,7 @@
 
 .login-container h2 {
     text-align: center;
-    color: #333;
+    color: var(--text-color);
     margin-bottom: 20px;
 }
 
@@ -55,7 +74,7 @@
     width: 100%;
     padding: 12px 15px;
     margin: 10px 0 20px 0;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
     font-size: 16px;
     box-sizing: border-box;
@@ -64,7 +83,7 @@
 .login-container button {
     width: 100%;
     padding: 12px;
-    background-color: #2c3e50;
+    background-color: var(--primary-color);
     color: white;
     border: none;
     border-radius: 5px;
@@ -74,11 +93,11 @@
 }
 
 .login-container button:hover {
-    background-color: #1a252f;
+    background-color: var(--hover-color);
 }
 
 .error {
-    color: red;
+    color: var(--error-color);
     text-align: center;
     margin-bottom: 20px;
 }
@@ -89,7 +108,7 @@
 }
 
 .link a {
-    color: #2c3e50;
+    color: var(--primary-color);
     text-decoration: none;
     font-weight: bold;
 }
@@ -103,7 +122,7 @@
     max-width: 400px; /* Максимальная ширина формы */
     width: 90%; /* Ширина формы */
     margin: 80px auto; /* Центрирование формы */
-    background: white; /* Фон формы */
+    background: var(--background-color); /* Фон формы */
     padding: 30px 40px; /* Отступы внутри формы */
     border-radius: 10px; /* Закругленные углы */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Тень для формы */
@@ -111,7 +130,7 @@
 
 .registration-container h2 {
     text-align: center; /* Центрирование заголовка */
-    color: #333; /* Цвет заголовка */
+    color: var(--text-color); /* Цвет заголовка */
     margin-bottom: 20px; /* Отступ снизу */
 }
 
@@ -121,7 +140,7 @@
     width: 100%; /* Полная ширина поля ввода */
     padding: 12px 15px; /* Отступ внутри поля */
     margin: 10px 0 20px 0; /* Отступы сверху и снизу */
-    border: 1px solid #ccc; /* Цвет рамки */
+    border: 1px solid var(--border-color); /* Цвет рамки */
     border-radius: 5px; /* Закругленные углы */
     font-size: 16px; /* Размер шрифта */
     box-sizing: border-box; /* Учет отступов в ширине */
@@ -130,7 +149,7 @@
 .registration-container button {
     width: 100%; /* Полная ширина кнопки */
     padding: 12px; /* Отступ внутри кнопки */
-    background-color: #2c3e50; /* Цвет фона кнопки */
+    background-color: var(--primary-color); /* Цвет фона кнопки */
     color: white; /* Цвет текста кнопки */
     border: none; /* Без рамки */
     border-radius: 5px; /* Закругленные углы */
@@ -140,17 +159,17 @@
 }
 
 .registration-container button:hover {
-    background-color: #1a252f; /* Цвет фона кнопки при наведении */
+    background-color: var(--hover-color); /* Цвет фона кнопки при наведении */
 }
 
 .error-message {
-    color: red; /* Цвет текста ошибок */
+    color: var(--error-color); /* Цвет текста ошибок */
     text-align: center; /* Центрирование текста ошибок */
     margin-bottom: 20px; /* Отступ снизу */
 }
 
 .success-message {
-    color: green; /* Цвет текста успеха */
+    color: var(--success-color); /* Цвет текста успеха */
     text-align: center; /* Центрирование текста успеха */
     margin-bottom: 20px; /* Отступ снизу */
 }
@@ -161,7 +180,7 @@
 }
 
 .link a {
-    color: #2c3e50; /* Цвет ссылки */
+    color: var(--primary-color); /* Цвет ссылки */
     text-decoration: none; /* Без подчеркивания */
     font-weight: bold; /* Жирный шрифт */
 }
