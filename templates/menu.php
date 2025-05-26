@@ -1,5 +1,4 @@
-<?php print_r($_SESSION);?>
-<nav>
+<nav class="main-menu">
     <ul>
         <li><a href="?page=home">Главная</a></li>
         <li><a href="?page=about">О сайте</a></li>

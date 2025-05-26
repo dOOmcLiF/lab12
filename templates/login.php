@@ -19,9 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Неверный логин или пароль.";
     }
 }
+?>
 <form method="post">
     <input type="text" name="username" required placeholder="Логин"><br>
     <input type="password" name="password" required placeholder="Пароль"><br>
     <button type="submit">Войти</button>
 </form>
-?>
