@@ -11,4 +11,5 @@ include 'templates/header.php';
 include "templates/menu.php";
 include "templates/$content";
 include 'templates/footer.php';
+include 'register.php';
 ?>

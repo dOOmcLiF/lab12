@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$db   = 'myapp';
+$db   = 'lab12';
 $user = 'myuser';
 $pass = 'password';
 $charset = 'utf8mb4';

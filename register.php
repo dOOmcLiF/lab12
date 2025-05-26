@@ -1,24 +1,87 @@
 <?php
-session_start();
-require_once 'includes/db.php';
+// register.php — страница регистрации пользователя
+
+require_once 'includes/db.php'; // Подключение к БД
+
+$error = '';
+$success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    // Получаем данные из формы
+    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
 
-    try {
-        $stmt = $pdo->prepare("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)");
-        $stmt->execute([$username, $email, $password]);
-        echo "Регистрация успешна!";
-    } catch (PDOException $e) {
-        echo "Ошибка регистрации.";
+    // Валидация данных
+    if (empty($username) || empty($email) || empty($password) || empty($confirm_password)) {
+        $error = "Все поля обязательны для заполнения.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Некорректный адрес электронной почты.";
+    } elseif ($password !== $confirm_password) {
+        $error = "Пароли не совпадают.";
+    } elseif (strlen($password) < 6) {
+        $error = "Пароль должен быть не менее 6 символов.";
+    } else {
+        // Проверяем, существует ли такой пользователь
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ? OR email = ?");
+        $stmt->execute([$username, $email]);
+        if ($stmt->rowCount() > 0) {
+            $error = "Пользователь с таким логином или email уже существует.";
+        } else {
+            // Хэшируем пароль
+            $password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+            // Сохраняем пользователя в БД
+            $stmt = $pdo->prepare("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)");
+            if ($stmt->execute([$username, $email, $password_hash])) {
+                $success = "Регистрация успешна! Теперь вы можете войти.";
+            } else {
+                $error = "Ошибка при регистрации. Попробуйте позже.";
+            }
+        }
     }
 }
 ?>
-<form method="post">
-    <input type="text" name="username" required placeholder="Имя пользователя"><br>
-    <input type="email" name="email" required placeholder="Email"><br>
-    <input type="password" name="password" required placeholder="Пароль"><br>
-    <button type="submit">Зарегистрироваться</button>
-</form>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+</head>
+<body>
+    <h2>Регистрация нового пользователя</h2>
+
+    <?php if ($error): ?>
+        <p style="color: red;"><?= $error ?></p>
+    <?php endif; ?>
+
+    <?php if ($success): ?>
+        <p style="color: green;"><?= $success ?></p>
+        <p><a href="login.php">Войти</a></p>
+    <?php endif; ?>
+
+    <form method="post">
+        <label>Имя пользователя:<br>
+            <input type="text" name="username" required><br><br>
+        </label>
+
+        <label>Email:<br>
+            <input type="email" name="email" required><br><br>
+        </label>
+
+        <label>Пароль:<br>
+            <input type="password" name="password" required><br><br>
+        </label>
+
+        <label>Подтвердите пароль:<br>
+            <input type="password" name="confirm_password" required><br><br>
+        </label>
+
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+
+    <p>Уже есть аккаунт? <a href="login.php">Войдите</a></p>
+</body>
+</html>
