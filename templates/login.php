@@ -1,6 +1,8 @@
 <?php
-session_start(); // <-- ВАЖНО!
+session_start();
 require_once 'includes/db.php';
+
+$error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
@@ -12,16 +14,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($user && password_verify($password, $user['password_hash'])) {
         $_SESSION['user_id'] = $user['id'];
-        #print_r($_SESSION);
         header("Location: index.php");
         exit;
     } else {
-        echo "Неверный логин или пароль.";
+        $error = "Неверный логин или пароль.";
     }
 }
 ?>
-<form method="post">
-    <input type="text" name="username" required placeholder="Логин"><br>
-    <input type="password" name="password" required placeholder="Пароль"><br>
-    <button type="submit">Войти</button>
-</form>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Вход</h2>
+
+    <?php if ($error): ?>
+        <div class="error"><?= $error ?></div>
+    <?php endif; ?>
+
+    <form method="post">
+        <input type="text" name="username" required placeholder="Логин">
+        <input type="password" name="password" required placeholder="Пароль">
+        <button type="submit">Войти</button>
+    </form>
+
+    <div class="link">
+        Нет аккаунта? <a href="register.php">Зарегистрироваться</a>
+    </div>
+</div>
+
+</body>
+</html>

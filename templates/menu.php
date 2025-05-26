@@ -9,6 +9,7 @@
             <li><a href="logout.php">Выход</a></li>
         <?php else: ?>
             <li><a href="/?page=login">Войти</a></li>
+            <li><a href="register.php">Зарегистрироваться</a></li>
         <?php endif; ?>
     </ul>
 </nav>
