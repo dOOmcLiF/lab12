@@ -49,39 +49,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Регистрация</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Подключение стилей -->
 </head>
 <body>
-    <h2>Регистрация нового пользователя</h2>
+    <div class="registration-container">
+        <h2>Регистрация нового пользователя</h2>
 
-    <?php if ($error): ?>
-        <p style="color: red;"><?= $error ?></p>
-    <?php endif; ?>
+        <?php if ($error): ?>
+            <p class="error-message"><?= $error ?></p>
+        <?php endif; ?>
 
-    <?php if ($success): ?>
-        <p style="color: green;"><?= $success ?></p>
-        <p><a href="login.php">Войти</a></p>
-    <?php endif; ?>
+        <?php if ($success): ?>
+            <p class="success-message"><?= $success ?></p>
+            <p><a href="login.php">Войти</a></p>
+        <?php endif; ?>
 
-    <form method="post">
-        <label>Имя пользователя:<br>
-            <input type="text" name="username" required><br><br>
-        </label>
+        <form method="post">
+            <label>Имя пользователя:<br>
+                <input type="text" name="username" required>
+            </label>
 
-        <label>Email:<br>
-            <input type="email" name="email" required><br><br>
-        </label>
+            <label>Email:<br>
+                <input type="email" name="email" required>
+            </label>
 
-        <label>Пароль:<br>
-            <input type="password" name="password" required><br><br>
-        </label>
+            <label>Пароль:<br>
+                <input type="password" name="password" required>
+            </label>
 
-        <label>Подтвердите пароль:<br>
-            <input type="password" name="confirm_password" required><br><br>
-        </label>
+            <label>Подтвердите пароль:<br>
+                <input type="password" name="confirm_password" required>
+            </label>
 
-        <button type="submit">Зарегистрироваться</button>
-    </form>
+            <button type="submit">Зарегистрироваться</button>
+        </form>
 
-    <p>Уже есть аккаунт? <a href="/?page=login">Войдите</a></p>
+        <p>Уже есть аккаунт? <a href="login.php">Войдите</a></p>
+    </div>
 </body>
 </html>
+
