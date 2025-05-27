@@ -250,8 +250,9 @@ footer {
     margin: 5% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
-    max-width: 900px;
+    width: fit-content; /* автоматически подстраивается под содержимое */
+    min-width: 800px;   /* минимальная ширина */
+    max-width: 1500px;  /* максимальная ширина */
     background-color: #fff;
     border-radius: 10px;
     text-align: center;
@@ -367,7 +368,7 @@ h2 {
 
 .about-image {
     width: 100%;
-    max-width: 1000px;
+    max-width: 00px;
     min-width: 600px;
     height: auto;
     border-radius: 10px;
