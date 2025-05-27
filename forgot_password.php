@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <button type="submit">Отправить ссылку</button>
 </form>
 
-<p><a href="login.php">← Назад</a></p>
+<p><a href="/?page=login">← Назад</a></p>
 
 </body>
 </html>
