@@ -2,12 +2,17 @@
 session_start();
 require_once 'includes/db.php';
 
-// Получаем параметры фильтрации из GET
+// Параметры пагинации
+$photos_per_page = 6;
+$page = $_GET['p'] ?? 1;
+$page = is_numeric($page) ? (int)$page : 1;
+
+// Получаем параметры фильтрации
 $author = $_GET['author'] ?? '';
 $date_input = $_GET['date'] ?? '';
 $date_for_sql = '';
 
-// Преобразование DD/MM/YYYY → YYYY-MM-DD
+// Преобразование даты DD/MM/YYYY → YYYY-MM-DD
 if (!empty($date_input)) {
     $date_obj = DateTime::createFromFormat('d/m/Y', $date_input);
     if ($date_obj) {
@@ -15,7 +20,34 @@ if (!empty($date_input)) {
     }
 }
 
-// Подготавливаем SQL запрос с возможностью фильтрации
+// Подсчёт общего количества фото с учетом фильтров
+$count_sql = "
+    SELECT COUNT(*) 
+    FROM images 
+    JOIN users ON images.user_id = users.id
+    WHERE images.visible = 1
+";
+$params = [];
+
+if (!empty($author)) {
+    $count_sql .= " AND users.username LIKE :author";
+    $params[':author'] = "%$author%";
+}
+if (!empty($date_for_sql)) {
+    $count_sql .= " AND DATE(images.uploaded_at) = :date";
+    $params[':date'] = $date_for_sql;
+}
+
+$stmt = $pdo->prepare($count_sql);
+$stmt->execute($params);
+$total_photos = $stmt->fetchColumn();
+$total_pages = ceil($total_photos / $photos_per_page);
+
+// Ограничиваем номер страницы диапазоном
+if ($page < 1) $page = 1;
+if ($page > $total_pages) $page = $total_pages;
+
+// Основной запрос с фильтрами и пагинацией
 $sql = "
     SELECT images.*, users.username 
     FROM images 
@@ -23,21 +55,20 @@ $sql = "
     WHERE images.visible = 1
 ";
 
-$params = [];
-
 if (!empty($author)) {
     $sql .= " AND users.username LIKE :author";
-    $params[':author'] = "%$author%";
 }
-
 if (!empty($date_for_sql)) {
     $sql .= " AND DATE(images.uploaded_at) = :date";
-    $params[':date'] = $date_for_sql;
 }
 
-$sql .= " ORDER BY images.uploaded_at DESC";
+$sql .= " ORDER BY images.uploaded_at DESC ";
+$sql .= " LIMIT :limit OFFSET :offset";
 
 $stmt = $pdo->prepare($sql);
+$params[':limit'] = $photos_per_page;
+$params[':offset'] = ($page - 1) * $photos_per_page;
+
 $stmt->execute($params);
 $photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -56,7 +87,7 @@ $photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <h2>Галерея</h2>
 
 <!-- Форма фильтрации -->
-<form method="get" action="/?page=gallery" class="filter-form">
+<form method="get" action="index.php" class="filter-form">
     <input type="hidden" name="page" value="<?= htmlspecialchars($_GET['page'] ?? 'gallery') ?>">
 
     <h3>Фильтр фотографий</h3>
@@ -92,6 +123,24 @@ $photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <p>Нет фотографий, удовлетворяющих условиям фильтра.</p>
 <?php endif; ?>
 
+<!-- Пагинация -->
+<div class="pagination">
+    <?php if ($page > 1): ?>
+        <a href="?page=gallery&p=<?= $page - 1 ?>&author=<?= urlencode($author) ?>&date=<?= urlencode($date_input) ?>">&laquo; Назад</a>
+    <?php endif; ?>
+
+    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+        <?php if ($i == $page): ?>
+            <strong><?= $i ?></strong>
+        <?php else: ?>
+            <a href="?page=gallery&p=<?= $i ?>&author=<?= urlencode($author) ?>&date=<?= urlencode($date_input) ?>"><?= $i ?></a>
+        <?php endif; ?>
+    <?php endfor; ?>
+
+    <?php if ($page < $total_pages): ?>
+        <a href="?page=gallery&p=<?= $page + 1 ?>&author=<?= urlencode($author) ?>&date=<?= urlencode($date_input) ?>">Вперёд &raquo;</a>
+    <?php endif; ?>
+</div>
 
 <!-- Модальное окно -->
 <div id="photoModal" class="modal" onclick="closeModal(event)">
@@ -110,7 +159,6 @@ function openModal(imageSrc, username, uploadDate, photoId) {
     document.getElementById('modal-img').src = imageSrc;
     document.getElementById('modal-user').innerText = username;
     document.getElementById('modal-date').innerText = uploadDate;
-
     document.getElementById('photoModal').style.display = "block";
 }
 
@@ -126,15 +174,17 @@ window.onclick = function(event) {
     }
 }
 </script>
+
 <script>
     flatpickr("#date", {
-        dateFormat: "d/m/Y",     // Формат отображения
-        altFormat: "d/m/Y",      // Альтернативный формат
-        allowInput: false,       // Запрет ручного ввода
+        dateFormat: "d/m/Y",
+        altFormat: "d/m/Y",
+        allowInput: false,
         locale: {
-            firstDayOfWeek: 1    // Начать неделю с понедельника
+            firstDayOfWeek: 1
         }
     });
 </script>
+
 </body>
 </html>
