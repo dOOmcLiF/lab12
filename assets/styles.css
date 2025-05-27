@@ -188,3 +188,46 @@ footer {
 .link a:hover {
     text-decoration: underline; /* Подчеркивание при наведении */
 }
+
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.gallery-grid img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-grid a {
+    display: block;
+}
+
+.gallery-grid img:hover {
+    transform: scale(1.05);
+}
+
+.photo-card {
+    text-align: center;
+    background: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.photo-card img {
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.photo-info p {
+    margin: 4px 0;
+    font-size: 14px;
+    color: #555;
+}

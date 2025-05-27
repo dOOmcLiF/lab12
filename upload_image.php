@@ -1,28 +1,72 @@
 <?php
 session_start();
 if (empty($_SESSION['user_id'])) {
-    die("Требуется войти.");
+    header("Location: login.php");
+    exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $tmp_name = $_FILES['image']['tmp_name'];
-    $name = basename($_FILES['image']['name']);
-    $target = "uploads/" . uniqid() . "_" . $name;
+require_once 'includes/db.php';
+require_once 'includes/gallery_functions.php';
 
-    move_uploaded_file($tmp_name, $target);
+$error = '';
+$success = '';
 
-    // Создание миниатюры
-    create_thumbnail($target, "thumbs/" . $name);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo'])) {
+    $allowed_types = ['image/jpeg', 'image/png'];
+    $file = $_FILES['photo'];
 
-    // Водяной знак
-    add_watermark($target);
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        $error = "Ошибка при загрузке файла.";
+    } elseif (!in_array($file['type'], $allowed_types)) {
+        $error = "Разрешены только JPG и PNG.";
+    } else {
+        $name = uniqid('img_') . '_' . basename($file['name']);
+        $original_path = "uploads/" . $name;
+        $thumb_path = "thumbs/" . $name;
+
+        if (move_uploaded_file($file['tmp_name'], $original_path)) {
+            // Создаем миниатюру
+            create_thumbnail($original_path, $thumb_path);
+
+            // Добавляем водяной знак
+            add_watermark($original_path);
+
+            // Сохраняем в БД
+            $stmt = $pdo->prepare("INSERT INTO images (user_id, original_path, thumb_path) VALUES (?, ?, ?)");
+            $stmt->execute([$_SESSION['user_id'], $original_path, $thumb_path]);
+
+            $success = "Фото успешно загружено!";
+        } else {
+            $error = "Не удалось сохранить файл.";
+        }
+    }
 }
 ?>
 
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Загрузить фото</title>
+</head>
+<body>
+
+<h2>Загрузить фото</h2>
+
+<?php if ($error): ?>
+    <p style="color: red;"><?= $error ?></p>
+<?php endif; ?>
+
+<?php if ($success): ?>
+    <p style="color: green;"><?= $success ?></p>
+<?php endif; ?>
+
 <form method="post" enctype="multipart/form-data">
-    <input type="file" name="image" required>
+    <input type="file" name="photo" accept="image/*" required><br><br>
     <button type="submit">Загрузить</button>
 </form>
 
-<?php function create_thumbnail($source, $dest, $max_size = 200) { ... } ?>
-<?php function add_watermark($source) { ... } ?>
+<p><a href="index.php">← Назад</a></p>
+
+</body>
+</html>
