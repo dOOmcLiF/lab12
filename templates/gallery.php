@@ -48,21 +48,21 @@ $photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <title>Галерея фотографий</title>
     <link rel="stylesheet" href="assets/style.css">
-    <!-- Flatpickr CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css ">
-
-    <!-- Flatpickr JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr "></script>
 </head>
 <body>
 
-<h2>Фильтр фотографий</h2>
+<h2>Галерея</h2>
 
 <!-- Форма фильтрации -->
-<form method="get" action="/?page=gallery">
-    <input type="hidden" name="page" value="<?= htmlspecialchars($_GET['page'] ?? '') ?>">
+<form method="get" action="/?page=gallery" class="filter-form">
+    <input type="hidden" name="page" value="<?= htmlspecialchars($_GET['page'] ?? 'gallery') ?>">
+
+    <h3>Фильтр фотографий</h3>
+
     <label for="author">Имя автора:</label>
-    <input type="text" id="author" name="author" value="<?= htmlspecialchars($author) ?>">
+    <input type="text" id="author" name="author" value="<?= htmlspecialchars($author) ?>" placeholder="Введите имя автора">
 
     <label for="date">Дата загрузки (ДД/ММ/ГГГГ):</label>
     <input type="text" id="date" name="date" placeholder="дд/мм/гггг" value="<?= htmlspecialchars($date_input) ?>" readonly>
@@ -72,7 +72,7 @@ $photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <hr>
 
-<h2>Результаты</h2>
+<h2>Фотографии</h2>
 
 <?php if (!empty($photos)): ?>
     <div class="gallery-grid">

@@ -27,32 +27,38 @@ $photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <?php if (!empty($photos)): ?>
     <div class="gallery-grid">
         <?php foreach ($photos as $photo): ?>
-            <div class="photo-card">
-                <a href="#" onclick="openModal('<?= htmlspecialchars($photo['original_path']) ?>', '<?= htmlspecialchars($photo['username']) ?>', '<?= htmlspecialchars($photo['uploaded_at']) ?>', <?= $photo['id'] ?>)">
-                    <img src="<?= htmlspecialchars($photo['thumb_path']) ?>" alt="Фото">
-                </a>
-                <p><?= date("d.m.Y H:i", strtotime($photo['uploaded_at'])) ?></p>
+<div class="photo-card">
+    <a href="#" onclick="...">
+        <img src="<?= htmlspecialchars($photo['thumb_path']) ?>" alt="Фото">
+    </a>
 
-                <form action="delete_photo.php" method="post" style="display:inline;">
-                    <input type="hidden" name="photo_id" value="<?= $photo['id'] ?>">
-                    <button type="submit" onclick="return confirm('Вы уверены?')">Удалить</button>
-                </form>
+    <!-- Блок с нижней информацией -->
+    <div class="photo-footer">
+        <p><?= date("d.m.Y H:i", strtotime($photo['uploaded_at'])) ?></p>
 
-                <form action="toggle_visibility.php" method="post" style="display:inline;">
-                    <input type="hidden" name="photo_id" value="<?= $photo['id'] ?>">
-                    <button type="submit">
-                        <?= $photo['visible'] ? 'Скрыть' : 'Показать' ?>
-                    </button>
-                </form>
+        <div class="photo-actions">
+            <form action="delete_photo.php" method="post" style="display:inline;">
+                <input type="hidden" name="photo_id" value="<?= $photo['id'] ?>">
+                <button type="submit" onclick="return confirm('Вы уверены?')">Удалить</button>
+            </form>
 
-                <p>
-                    <?php if ($photo['visible']): ?>
-                        <span style="color: green;">✅ Видимое</span>
-                    <?php else: ?>
-                        <span style="color: red;">❌ Скрыто</span>
-                    <?php endif; ?>
-                </p>
-            </div>
+            <form action="toggle_visibility.php" method="post" style="display:inline;">
+                <input type="hidden" name="photo_id" value="<?= $photo['id'] ?>">
+                <button type="submit">
+                    <?= $photo['visible'] ? 'Скрыть' : 'Показать' ?>
+                </button>
+            </form>
+        </div>
+
+        <p>
+            <?php if ($photo['visible']): ?>
+                <span style="color: green;">✅ Видимое</span>
+            <?php else: ?>
+                <span style="color: red;">❌ Скрыто</span>
+            <?php endif; ?>
+        </p>
+    </div>
+</div>
         <?php endforeach; ?>
     </div>
 <?php else: ?>
@@ -61,6 +67,7 @@ $photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <p><a href="/?page=upload_image">← Загрузить новое фото</a></p>
 
+<!-- Модальное окно -->
 <div id="photoModal" class="modal" onclick="closeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation();">
         <span class="close-btn" onclick="closeModal()">&times;</span>
@@ -97,3 +104,5 @@ window.onclick = function(event) {
     }
 }
 </script>
+</body>
+</html>
