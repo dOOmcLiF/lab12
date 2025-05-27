@@ -7,9 +7,6 @@ $menu_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php foreach ($menu_items as $item): ?>
             <li><a href="<?= htmlspecialchars($item['url']) ?>"><?= htmlspecialchars($item['title']) ?></a></li>
         <?php endforeach; ?>
-        <li><a href="?page=home">Главная</a></li>
-        <li><a href="?page=about">О сайте</a></li>
-        <li><a href="?page=gallery">Галерея</a></li>
         <?php if (!empty($_SESSION['user_id'])): ?>
             <li><a href="?page=upload_image">Загрузить фото</a></li>
             <li><a href="?page=my_gallery">Моя галерея</a></li>
