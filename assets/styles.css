@@ -340,7 +340,7 @@ button:hover {
     transition: background 0.3s ease; /* Плавный переход цвета */
 }
 
-upload-container file {
+.upload-container input {
     width: 100%; /* Полная ширина кнопки */
     padding: 12px; /* Отступ внутри кнопки */
     background-color:#2e3842; /* Цвет фона кнопки */
