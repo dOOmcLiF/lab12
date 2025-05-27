@@ -49,7 +49,7 @@ if (!$token) {
 
 <?php if ($success): ?>
     <p style="color: green;"><?= $success ?></p>
-    <p><a href="login.php">Войти</a></p>
+    <p><a href="/?page=login">Войти</a></p>
 <?php endif; ?>
 
 <?php if (!$success && $user): ?>
