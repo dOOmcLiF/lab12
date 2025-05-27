@@ -328,7 +328,7 @@ button:hover {
     text-align: center;
     margin-bottom: 20px;
 }
-.upload-container .button1 {
+.upload-container button {
     width: 100%; /* Полная ширина кнопки */
     padding: 12px; /* Отступ внутри кнопки */
     background-color: var(--primary-color); /* Цвет фона кнопки */
@@ -339,6 +339,18 @@ button:hover {
     cursor: pointer; /* Указатель при наведении */
     transition: background 0.3s ease; /* Плавный переход цвета */
 }
+
+upload-container file {
+    width: 100%; /* Полная ширина кнопки */
+    padding: 12px; /* Отступ внутри кнопки */
+    background-color:#2e3842; /* Цвет фона кнопки */
+    color: white; /* Цвет текста кнопки *//* Без рамки */
+    border-radius: 5px; /* Закругленные углы */
+    font-size: 16px; /* Размер шрифта */
+    cursor: pointer; /* Указатель при наведении */
+    transition: background 0.3s ease; /* Плавный переход цвета */
+}
+
 .upload-container .error {
     color: var(--error-color);
 }
