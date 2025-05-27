@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare("UPDATE images SET visible = ? WHERE id = ?");
     $stmt->execute([$new_state, $photo_id]);
 
-    header("Location: /?page=gallery");
+    header("Location: /?page=my_gallery");
     exit;
 }
 ?>
