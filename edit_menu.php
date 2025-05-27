@@ -65,6 +65,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: edit_menu.php");
         exit;
     }
+
+    // === Импорт пользователей из XML ===
+    if (isset($_POST['import_users']) && !empty($_FILES['xml_file_users'])) {
+        $xml = simplexml_load_file($_FILES['xml_file_users']['tmp_name']);
+        if ($xml) {
+            foreach ($xml->user as $userData) {
+                $username = trim((string)$userData->username);
+                $email = trim((string)$userData->email);
+                $password_hash = trim((string)$userData->password_hash);
+
+                // Проверяем, существует ли такой пользователь
+                $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
+                $stmt->execute([$username, $email]);
+                if ($stmt->fetch()) {
+                    echo "<p style='color:orange;'>Пользователь '$username' уже существует.</p>";
+                    continue;
+                }
+
+                // Вставляем нового пользователя
+                $stmt = $pdo->prepare("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)");
+                $stmt->execute([$username, $email, $password_hash]);
+
+                echo "<p style='color:green;'>Пользователь '$username' успешно импортирован.</p>";
+        }
+    } else {
+        echo "<p style='color:red;'>Ошибка чтения XML-файла.</p>";
+    }
+    }
 }
 
 // Получаем текущие пункты меню
@@ -131,6 +159,19 @@ $menu_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </tbody>
     </table>
 </form>
+
+
+<h3>Импорт / Экспорт пользователей</h3>
+<form method="post" enctype="multipart/form-data">
+    <input type="file" name="xml_file_users" accept=".xml" required><br><br>
+    <button type="submit" name="import_users">Импортировать пользователей</button>
+</form>
+
+<form method="get" action="export_users.php">
+    <button type="submit" name="export_users_xml">Экспортировать пользователей как XML</button>
+</form>
+
+
 
 <p><a href="index.php">← Назад</a></p>
 
