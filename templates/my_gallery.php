@@ -28,11 +28,10 @@ $photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="gallery-grid">
         <?php foreach ($photos as $photo): ?>
 <div class="photo-card">
-    <a href="#" onclick="...">
+    <a href="#" onclick="openModal('<?= htmlspecialchars($photo['original_path']) ?>', '<?= htmlspecialchars($photo['username']) ?>', '<?= htmlspecialchars($photo['uploaded_at']) ?>', <?= $photo['id'] ?>)">
         <img src="<?= htmlspecialchars($photo['thumb_path']) ?>" alt="Фото">
     </a>
 
-    <!-- Блок с нижней информацией -->
     <div class="photo-footer">
         <p><?= date("d.m.Y H:i", strtotime($photo['uploaded_at'])) ?></p>
 

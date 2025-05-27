@@ -463,6 +463,12 @@ h2 {
     overflow: hidden;
 }
 
+.photo-card a {
+    display: block;
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+}
 /* === Блок с нижними элементами === */
 .photo-footer {
     display: flex;
