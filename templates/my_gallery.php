@@ -60,7 +60,6 @@ $photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <?php endif; ?>
 
 <p><a href="/?page=upload_image">← Загрузить новое фото</a></p>
-<p><a href="index.php">← На главную</a></p>
 
 <div id="photoModal" class="modal" onclick="closeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation();">

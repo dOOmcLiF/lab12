@@ -42,7 +42,6 @@ $photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <p>Пока нет загруженных фотографий.</p>
 <?php endif; ?>
 
-<p><a href="index.php">← На главную</a></p>
 
 <!-- Модальное окно -->
 <div id="photoModal" class="modal" onclick="closeModal(event)">

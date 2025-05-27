@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo'])) {
 
     <form method="post" enctype="multipart/form-data">
         <input type="file" name="photo" accept="image/*" required><br><br>
-        <button class="button1" type="submit">Загрузить</button>
+        <button type="submit">Загрузить</button>
     </form>
 
 </div>
