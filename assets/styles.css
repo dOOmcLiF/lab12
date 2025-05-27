@@ -45,7 +45,9 @@ footer {
     transition: background-color 0.3s ease, color 0.3s ease;
     display: block;
 }
-
+.main-menu li a {
+    font-size:20px;
+}
 .main-menu a:hover,
 .main-menu a:focus {
     background-color: var(--secondary-color);
@@ -361,4 +363,20 @@ h2 {
     text-align: center; /* Центрирование заголовка */
     color: var(--text-color); /* Цвет заголовка */
     margin-bottom: 20px; /* Отступ снизу */
+}
+
+.about-image {
+    width: 100%;
+    max-width: 1000px;
+    min-width: 600px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.about-container p{
+    font-size: 22px;
+}
+.centered-div {
+    display: flex;
+    justify-content: center; /* Горизонтальное центрирование */     /* Вертикальное центрирование */
 }
