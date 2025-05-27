@@ -3,8 +3,14 @@ session_start();
 require_once 'includes/db.php';
 $page = $_GET['page'] ?? 'home';
 
-$photos = [];
-$stmt = $pdo->query("SELECT * FROM images ORDER BY uploaded_at DESC LIMIT 6");
+$stmt = $pdo->query("
+    SELECT images.*, users.username 
+    FROM images 
+    JOIN users ON images.user_id = users.id 
+    WHERE images.visible = 1 
+    ORDER BY images.uploaded_at DESC 
+    LIMIT 6
+");
 $photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 switch ($page) {
@@ -12,7 +18,7 @@ switch ($page) {
         $content = 'about_content.php';
         break;
     case 'gallery':
-        $content = 'gallery_content.php';
+        $content = 'gallery.php';
         break;
     case 'login':
         $content = 'login.php';
