@@ -307,3 +307,42 @@ button {
 button:hover {
     background-color: #1a252f;
 }
+
+.upload-container {
+    max-width: 500px;
+    width: 90%;
+    margin: 80px auto;
+    background: var(--background-color);
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.upload-container h2 {
+    text-align: center;
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+.upload-container p {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.upload-container .button1 {
+    width: 100%; /* Полная ширина кнопки */
+    padding: 12px; /* Отступ внутри кнопки */
+    background-color: var(--primary-color); /* Цвет фона кнопки */
+    color: white; /* Цвет текста кнопки */
+    border: none; /* Без рамки */
+    border-radius: 5px; /* Закругленные углы */
+    font-size: 16px; /* Размер шрифта */
+    cursor: pointer; /* Указатель при наведении */
+    transition: background 0.3s ease; /* Плавный переход цвета */
+}
+.upload-container .error {
+    color: var(--error-color);
+}
+
+.upload-container .success {
+    color: var(--success-color);
+}

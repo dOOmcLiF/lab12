@@ -48,25 +48,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo'])) {
 <head>
     <meta charset="UTF-8">
     <title>Загрузить фото</title>
+    <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
+<div class = "upload-container">
+    <h2>Загрузить фото</h2>
 
-<h2>Загрузить фото</h2>
+    <?php if ($error): ?>
+        <p style="error"><?= $error ?></p>
+    <?php endif; ?>
 
-<?php if ($error): ?>
-    <p style="color: red;"><?= $error ?></p>
-<?php endif; ?>
+    <?php if ($success): ?>
+        <p style="success"><?= $success ?></p>
+    <?php endif; ?>
 
-<?php if ($success): ?>
-    <p style="color: green;"><?= $success ?></p>
-<?php endif; ?>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="photo" accept="image/*" required><br><br>
+        <button class="button1" type="submit">Загрузить</button>
+    </form>
 
-<form method="post" enctype="multipart/form-data">
-    <input type="file" name="photo" accept="image/*" required><br><br>
-    <button type="submit">Загрузить</button>
-</form>
-
-<p><a href="index.php">← Назад</a></p>
-
+</div>
 </body>
 </html>

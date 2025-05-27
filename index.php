@@ -26,6 +26,9 @@ switch ($page) {
     case 'register':
         $content = 'register.php';
         break;
+    case 'upload_image':
+        $content = 'upload_image.php';
+        break;
     default:
         $content = 'home_content.php';
 }

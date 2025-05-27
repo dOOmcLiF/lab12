@@ -11,7 +11,7 @@ $menu_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <li><a href="?page=about">О сайте</a></li>
         <li><a href="?page=gallery">Галерея</a></li>
         <?php if (!empty($_SESSION['user_id'])): ?>
-            <li><a href="upload_image.php">Загрузить фото</a></li>
+            <li><a href="?page=upload_image">Загрузить фото</a></li>
             <li><a href="?page=gallery">Моя галерея</a></li>
             <li style="color: white; padding: 10px 16px;"> <?= htmlspecialchars($_SESSION['username']) ?></li>
             <?php if (!empty($_SESSION['user_id']) && $_SESSION['user_id'] == 1): ?>
