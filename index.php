@@ -23,6 +23,9 @@ switch ($page) {
     case 'login':
         $content = 'login.php';
         break;
+    case 'register':
+        $content = 'register.php';
+        break;
     default:
         $content = 'home_content.php';
 }

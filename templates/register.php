@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <?php if ($success): ?>
             <p class="success-message"><?= $success ?></p>
-            <p><a href="login.php">Войти</a></p>
+            <p><a href="/?page=login">Войти</a></p>
         <?php endif; ?>
 
         <form method="post">

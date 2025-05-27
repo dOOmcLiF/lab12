@@ -1,0 +1,7 @@
+CREATE TABLE menu (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(50) NOT NULL,
+    url VARCHAR(100) NOT NULL,
+    position INT NOT NULL,
+    visible BOOLEAN DEFAULT TRUE
+);
