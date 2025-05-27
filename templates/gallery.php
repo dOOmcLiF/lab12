@@ -2,14 +2,43 @@
 session_start();
 require_once 'includes/db.php';
 
-// Получаем все фото с именами пользователей
-$stmt = $pdo->query("
+// Получаем параметры фильтрации из GET
+$author = $_GET['author'] ?? '';
+$date_input = $_GET['date'] ?? '';
+$date_for_sql = '';
+
+// Преобразование DD/MM/YYYY → YYYY-MM-DD
+if (!empty($date_input)) {
+    $date_obj = DateTime::createFromFormat('d/m/Y', $date_input);
+    if ($date_obj) {
+        $date_for_sql = $date_obj->format('Y-m-d');
+    }
+}
+
+// Подготавливаем SQL запрос с возможностью фильтрации
+$sql = "
     SELECT images.*, users.username 
     FROM images 
     JOIN users ON images.user_id = users.id
     WHERE images.visible = 1
-    ORDER BY uploaded_at DESC
-");
+";
+
+$params = [];
+
+if (!empty($author)) {
+    $sql .= " AND users.username LIKE :author";
+    $params[':author'] = "%$author%";
+}
+
+if (!empty($date_for_sql)) {
+    $sql .= " AND DATE(images.uploaded_at) = :date";
+    $params[':date'] = $date_for_sql;
+}
+
+$sql .= " ORDER BY images.uploaded_at DESC";
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
 $photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -17,12 +46,33 @@ $photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Все фотографии</title>
+    <title>Галерея фотографий</title>
     <link rel="stylesheet" href="assets/style.css">
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css ">
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr "></script>
 </head>
 <body>
 
-<h2>Все загруженные фотографии</h2>
+<h2>Фильтр фотографий</h2>
+
+<!-- Форма фильтрации -->
+<form method="get" action="/?page=gallery">
+    <input type="hidden" name="page" value="<?= htmlspecialchars($_GET['page'] ?? '') ?>">
+    <label for="author">Имя автора:</label>
+    <input type="text" id="author" name="author" value="<?= htmlspecialchars($author) ?>">
+
+    <label for="date">Дата загрузки (ДД/ММ/ГГГГ):</label>
+    <input type="text" id="date" name="date" placeholder="дд/мм/гггг" value="<?= htmlspecialchars($date_input) ?>" readonly>
+
+    <button type="submit">Применить фильтр</button>
+</form>
+
+<hr>
+
+<h2>Результаты</h2>
 
 <?php if (!empty($photos)): ?>
     <div class="gallery-grid">
@@ -39,7 +89,7 @@ $photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endforeach; ?>
     </div>
 <?php else: ?>
-    <p>Пока нет загруженных фотографий.</p>
+    <p>Нет фотографий, удовлетворяющих условиям фильтра.</p>
 <?php endif; ?>
 
 
@@ -76,6 +126,15 @@ window.onclick = function(event) {
     }
 }
 </script>
-
+<script>
+    flatpickr("#date", {
+        dateFormat: "d/m/Y",     // Формат отображения
+        altFormat: "d/m/Y",      // Альтернативный формат
+        allowInput: false,       // Запрет ручного ввода
+        locale: {
+            firstDayOfWeek: 1    // Начать неделю с понедельника
+        }
+    });
+</script>
 </body>
 </html>
