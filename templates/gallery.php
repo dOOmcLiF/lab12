@@ -32,28 +32,34 @@ $photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <img src="<?= htmlspecialchars($photo['thumb_path']) ?>" alt="Фото">
                 </a>
                 <p><?= date("d.m.Y H:i", strtotime($photo['uploaded_at'])) ?></p>
-                
-                <!-- Удаление -->
+
                 <form action="delete_photo.php" method="post" style="display:inline;">
                     <input type="hidden" name="photo_id" value="<?= $photo['id'] ?>">
                     <button type="submit" onclick="return confirm('Вы уверены?')">Удалить</button>
                 </form>
 
-                <!-- Скрытие -->
                 <form action="toggle_visibility.php" method="post" style="display:inline;">
                     <input type="hidden" name="photo_id" value="<?= $photo['id'] ?>">
                     <button type="submit">
                         <?= $photo['visible'] ? 'Скрыть' : 'Показать' ?>
                     </button>
                 </form>
+
+                <p>
+                    <?php if ($photo['visible']): ?>
+                        <span style="color: green;">✅ Видимое</span>
+                    <?php else: ?>
+                        <span style="color: red;">❌ Скрыто</span>
+                    <?php endif; ?>
+                </p>
             </div>
-                    <?php endforeach; ?>
+        <?php endforeach; ?>
     </div>
 <?php else: ?>
     <p>У вас пока нет загруженных фотографий.</p>
 <?php endif; ?>
 
-<p><a href="upload_image.php">← Загрузить новое фото</a></p>
+<p><a href="/?page=upload_image">← Загрузить новое фото</a></p>
 <p><a href="index.php">← На главную</a></p>
 
 <div id="photoModal" class="modal" onclick="closeModal(event)">
