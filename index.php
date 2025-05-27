@@ -17,6 +17,9 @@ switch ($page) {
     case 'about':
         $content = 'about_content.php';
         break;
+    case 'my_gallery':
+        $content = 'my_gallery.php';
+        break;
     case 'gallery':
         $content = 'gallery.php';
         break;
